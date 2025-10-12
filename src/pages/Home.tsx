@@ -17,24 +17,44 @@ const Home = () => {
       title: "Cars",
       description: "Predict automotive sales with precision",
       image: categoryCars,
+      stats: [
+        { label: "Avg Price Range", value: "₹10-25L" },
+        { label: "Key Factor", value: "Fuel Efficiency" },
+        { label: "Sweet Spot", value: "15+ km/l" },
+      ],
     },
     {
       id: "bikes",
       title: "Bikes",
       description: "Forecast two-wheeler market trends",
       image: categoryBikes,
+      stats: [
+        { label: "Avg Price Range", value: "₹80K-2L" },
+        { label: "Key Factor", value: "Mileage" },
+        { label: "Sweet Spot", value: "45+ km/l" },
+      ],
     },
     {
       id: "appliances",
       title: "Home Appliances",
       description: "Analyze home appliance demand",
       image: categoryAppliances,
+      stats: [
+        { label: "Avg Price Range", value: "₹15K-80K" },
+        { label: "Key Factor", value: "Energy Rating" },
+        { label: "Sweet Spot", value: "4-5 Star" },
+      ],
     },
     {
       id: "fmcg",
       title: "FMCG",
       description: "Fast-moving consumer goods insights",
       image: categoryFmcg,
+      stats: [
+        { label: "Avg Price Range", value: "₹50-500" },
+        { label: "Key Factor", value: "Shelf Life" },
+        { label: "Sweet Spot", value: "6-12 months" },
+      ],
     },
   ];
 
@@ -126,7 +146,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             {categories.map((category) => (
               <Card
                 key={category.id}
@@ -142,12 +162,23 @@ const Home = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{category.title}</h3>
+                  <h3 className="text-xl font-semibold mb-3">{category.title}</h3>
                   <p className="text-muted-foreground text-sm mb-4">
                     {category.description}
                   </p>
+                  
+                  {/* Industry Infographics */}
+                  <div className="space-y-2 mb-4 pb-4 border-b border-border/50">
+                    {category.stats.map((stat, idx) => (
+                      <div key={idx} className="flex justify-between items-center">
+                        <span className="text-xs text-muted-foreground">{stat.label}:</span>
+                        <span className="text-xs font-semibold text-primary">{stat.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  
                   <div className="flex items-center text-primary text-sm font-medium">
-                    Select
+                    Analyze Now
                     <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>

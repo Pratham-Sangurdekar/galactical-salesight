@@ -16,41 +16,97 @@ const Results = () => {
       return;
     }
 
-    // Simple prediction logic based on car attributes
+    let score = 0;
+
+    // Cars prediction logic
     if (category === "cars") {
       const price = parseFloat(formData.price);
       const mileage = parseFloat(formData.mileage);
       const horsepower = parseFloat(formData.horsepower);
       
-      // Scoring algorithm
-      let score = 0;
-      
-      // Price sweet spot (10-25 lakhs is optimal)
       if (price >= 1000000 && price <= 2500000) score += 30;
       else if (price > 2500000 && price <= 4000000) score += 20;
       else score += 10;
       
-      // Good mileage
       if (mileage >= 15) score += 25;
       else if (mileage >= 10) score += 15;
       
-      // Performance
       if (horsepower >= 120 && horsepower <= 200) score += 20;
       else if (horsepower > 200) score += 15;
       
-      // Body type preference
       if (formData.bodyType === "suv") score += 15;
       else if (formData.bodyType === "sedan") score += 10;
       
-      // Fuel type
       if (formData.fuelType === "electric" || formData.fuelType === "hybrid") score += 15;
       else if (formData.fuelType === "petrol") score += 10;
       
-      // Custom interiors
       if (formData.customInteriors === "yes") score += 10;
-      
-      setPrediction(score >= 60 ? "profitable" : "risky");
     }
+
+    // Bikes prediction logic
+    if (category === "bikes") {
+      const price = parseFloat(formData.price);
+      const mileage = parseFloat(formData.mileage);
+      const engineCapacity = parseFloat(formData.engineCapacity);
+      
+      if (price >= 80000 && price <= 200000) score += 30;
+      else if (price > 200000 && price <= 400000) score += 20;
+      else score += 10;
+      
+      if (mileage >= 45) score += 30;
+      else if (mileage >= 35) score += 20;
+      
+      if (engineCapacity >= 150 && engineCapacity <= 250) score += 20;
+      else if (engineCapacity > 250) score += 15;
+      
+      if (formData.bikeType === "commuter") score += 15;
+      else if (formData.bikeType === "sport") score += 10;
+      
+      if (formData.abs === "yes") score += 10;
+      if (formData.digitalDisplay === "yes") score += 5;
+    }
+
+    // Appliances prediction logic
+    if (category === "appliances") {
+      const price = parseFloat(formData.price);
+      const energyRating = parseFloat(formData.energyRating);
+      
+      if (price >= 15000 && price <= 80000) score += 30;
+      else if (price > 80000 && price <= 150000) score += 20;
+      else score += 10;
+      
+      if (energyRating >= 4) score += 30;
+      else if (energyRating >= 3) score += 20;
+      
+      if (formData.applianceType === "refrigerator" || formData.applianceType === "air-conditioner") score += 15;
+      else score += 10;
+      
+      if (formData.smartFeatures === "yes") score += 15;
+      if (formData.warranty >= 3) score += 10;
+    }
+
+    // FMCG prediction logic
+    if (category === "fmcg") {
+      const price = parseFloat(formData.price);
+      const shelfLife = parseFloat(formData.shelfLife);
+      
+      if (price >= 50 && price <= 500) score += 30;
+      else if (price > 500 && price <= 1000) score += 20;
+      else score += 10;
+      
+      if (shelfLife >= 6 && shelfLife <= 12) score += 25;
+      else if (shelfLife > 12) score += 15;
+      
+      if (formData.packaging === "eco-friendly") score += 15;
+      else if (formData.packaging === "premium") score += 10;
+      
+      if (formData.category === "food" || formData.category === "beverages") score += 15;
+      else score += 10;
+      
+      if (formData.organic === "yes") score += 15;
+    }
+    
+    setPrediction(score >= 60 ? "profitable" : "risky");
   }, [formData, category, navigate]);
 
   if (!formData || !prediction) {
@@ -59,18 +115,71 @@ const Results = () => {
 
   const isProfitable = prediction === "profitable";
 
-  const recommendations = isProfitable ? [
-    "Your car configuration is well-positioned for the current market",
-    "The price point aligns with consumer purchasing power",
-    "Fuel efficiency meets market expectations",
-    "Consider adding premium features to justify the price point",
-  ] : [
-    "Consider adjusting the price to ₹10-25 lakhs for optimal market response",
-    "Improve fuel efficiency to at least 15 km/l for better appeal",
-    "Add customizable interior options to increase perceived value",
-    "Consider offering hybrid or electric variants to attract eco-conscious buyers",
-    "Balance performance with efficiency - aim for 120-200 HP range",
-  ];
+  const getRecommendations = () => {
+    if (category === "cars") {
+      return isProfitable ? [
+        "Your car configuration is well-positioned for the current market",
+        "The price point aligns with consumer purchasing power",
+        "Fuel efficiency meets market expectations",
+        "Consider adding premium features to justify the price point",
+      ] : [
+        "Consider adjusting the price to ₹10-25 lakhs for optimal market response",
+        "Improve fuel efficiency to at least 15 km/l for better appeal",
+        "Add customizable interior options to increase perceived value",
+        "Consider offering hybrid or electric variants to attract eco-conscious buyers",
+        "Balance performance with efficiency - aim for 120-200 HP range",
+      ];
+    }
+
+    if (category === "bikes") {
+      return isProfitable ? [
+        "Your bike specifications align well with market demand",
+        "Mileage is competitive for the target segment",
+        "Price positioning is optimal for profitability",
+        "Engine capacity suits the intended use case",
+      ] : [
+        "Improve mileage to at least 45 km/l for commuter segment appeal",
+        "Adjust price to ₹80K-2L range for better market penetration",
+        "Add ABS for safety-conscious buyers",
+        "Consider digital display for modern appeal",
+        "Balance engine capacity with fuel efficiency (150-250cc sweet spot)",
+      ];
+    }
+
+    if (category === "appliances") {
+      return isProfitable ? [
+        "Energy efficiency rating is strong for market acceptance",
+        "Price point is competitive in the segment",
+        "Product features align with consumer preferences",
+        "Warranty terms add value proposition",
+      ] : [
+        "Improve energy rating to 4-5 stars for eco-conscious consumers",
+        "Adjust pricing to ₹15K-80K range for volume sales",
+        "Add smart features for tech-savvy consumers",
+        "Extend warranty to at least 3 years for trust building",
+        "Focus on high-demand categories (refrigerators, ACs)",
+      ];
+    }
+
+    if (category === "fmcg") {
+      return isProfitable ? [
+        "Shelf life is optimal for retail distribution",
+        "Pricing strategy suits the target market",
+        "Packaging choice enhances brand perception",
+        "Product category has strong market demand",
+      ] : [
+        "Optimize shelf life to 6-12 months for better distribution",
+        "Adjust pricing to ₹50-500 range for mass market appeal",
+        "Consider eco-friendly packaging for sustainability trend",
+        "Focus on food/beverage categories for higher turnover",
+        "Add organic certification to tap premium segment",
+      ];
+    }
+
+    return [];
+  };
+
+  const recommendations = getRecommendations();
 
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -114,42 +223,157 @@ const Results = () => {
             Your Product Specifications
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex justify-between py-2 border-b border-border">
-              <span className="text-muted-foreground">Color:</span>
-              <span className="font-medium">{formData.color}</span>
-            </div>
-            <div className="flex justify-between py-2 border-b border-border">
-              <span className="text-muted-foreground">Price:</span>
-              <span className="font-medium">₹{parseFloat(formData.price).toLocaleString('en-IN')}</span>
-            </div>
-            <div className="flex justify-between py-2 border-b border-border">
-              <span className="text-muted-foreground">Mileage:</span>
-              <span className="font-medium">{formData.mileage} km/l</span>
-            </div>
-            <div className="flex justify-between py-2 border-b border-border">
-              <span className="text-muted-foreground">Body Type:</span>
-              <span className="font-medium capitalize">{formData.bodyType}</span>
-            </div>
-            <div className="flex justify-between py-2 border-b border-border">
-              <span className="text-muted-foreground">Transmission:</span>
-              <span className="font-medium capitalize">{formData.transmission}</span>
-            </div>
-            <div className="flex justify-between py-2 border-b border-border">
-              <span className="text-muted-foreground">Fuel Type:</span>
-              <span className="font-medium capitalize">{formData.fuelType}</span>
-            </div>
-            <div className="flex justify-between py-2 border-b border-border">
-              <span className="text-muted-foreground">Horsepower:</span>
-              <span className="font-medium">{formData.horsepower} HP</span>
-            </div>
-            <div className="flex justify-between py-2 border-b border-border">
-              <span className="text-muted-foreground">Top Speed:</span>
-              <span className="font-medium">{formData.topSpeed} km/h</span>
-            </div>
-            <div className="flex justify-between py-2 border-b border-border md:col-span-2">
-              <span className="text-muted-foreground">Customizable Interiors:</span>
-              <span className="font-medium capitalize">{formData.customInteriors}</span>
-            </div>
+            {category === "cars" && (
+              <>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Color:</span>
+                  <span className="font-medium">{formData.color}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Price:</span>
+                  <span className="font-medium">₹{parseFloat(formData.price).toLocaleString('en-IN')}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Mileage:</span>
+                  <span className="font-medium">{formData.mileage} km/l</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Body Type:</span>
+                  <span className="font-medium capitalize">{formData.bodyType}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Transmission:</span>
+                  <span className="font-medium capitalize">{formData.transmission}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Fuel Type:</span>
+                  <span className="font-medium capitalize">{formData.fuelType}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Horsepower:</span>
+                  <span className="font-medium">{formData.horsepower} HP</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Top Speed:</span>
+                  <span className="font-medium">{formData.topSpeed} km/h</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border md:col-span-2">
+                  <span className="text-muted-foreground">Customizable Interiors:</span>
+                  <span className="font-medium capitalize">{formData.customInteriors}</span>
+                </div>
+              </>
+            )}
+            
+            {category === "bikes" && (
+              <>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Color:</span>
+                  <span className="font-medium">{formData.color}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Price:</span>
+                  <span className="font-medium">₹{parseFloat(formData.price).toLocaleString('en-IN')}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Mileage:</span>
+                  <span className="font-medium">{formData.mileage} km/l</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Engine Capacity:</span>
+                  <span className="font-medium">{formData.engineCapacity} cc</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Bike Type:</span>
+                  <span className="font-medium capitalize">{formData.bikeType}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">ABS:</span>
+                  <span className="font-medium capitalize">{formData.abs}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Digital Display:</span>
+                  <span className="font-medium capitalize">{formData.digitalDisplay}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Weight:</span>
+                  <span className="font-medium">{formData.weight} kg</span>
+                </div>
+              </>
+            )}
+            
+            {category === "appliances" && (
+              <>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Appliance Type:</span>
+                  <span className="font-medium capitalize">{formData.applianceType}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Brand Tier:</span>
+                  <span className="font-medium capitalize">{formData.brandTier}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Price:</span>
+                  <span className="font-medium">₹{parseFloat(formData.price).toLocaleString('en-IN')}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Energy Rating:</span>
+                  <span className="font-medium">{formData.energyRating} Star</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Capacity:</span>
+                  <span className="font-medium">{formData.capacity}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Smart Features:</span>
+                  <span className="font-medium capitalize">{formData.smartFeatures}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Warranty:</span>
+                  <span className="font-medium">{formData.warranty} years</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Color:</span>
+                  <span className="font-medium">{formData.color}</span>
+                </div>
+              </>
+            )}
+            
+            {category === "fmcg" && (
+              <>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Product Name:</span>
+                  <span className="font-medium">{formData.productName}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Category:</span>
+                  <span className="font-medium capitalize">{formData.category}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Price:</span>
+                  <span className="font-medium">₹{parseFloat(formData.price).toLocaleString('en-IN')}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Package Size:</span>
+                  <span className="font-medium">{formData.packageSize}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Shelf Life:</span>
+                  <span className="font-medium">{formData.shelfLife} months</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Packaging:</span>
+                  <span className="font-medium capitalize">{formData.packaging}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Organic:</span>
+                  <span className="font-medium capitalize">{formData.organic}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border">
+                  <span className="text-muted-foreground">Target Market:</span>
+                  <span className="font-medium capitalize">{formData.targetMarket}</span>
+                </div>
+              </>
+            )}
           </div>
         </Card>
 
