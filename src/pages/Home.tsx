@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import heroGalaxy from "@/assets/hero-galaxy.jpg";
 import categoryCars from "@/assets/category-cars.jpg";
 import categoryBikes from "@/assets/category-bikes.jpg";
-import categoryAppliances from "@/assets/category-appliances.jpg";
+import categoryAppliances from "@/assets/images.png";
 import categoryFmcg from "@/assets/category-fmcg.jpg";
 
 const Home = () => {
