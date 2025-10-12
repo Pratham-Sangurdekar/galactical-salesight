@@ -141,7 +141,10 @@ const Home = () => {
                 className="relative overflow-hidden bg-card/20 backdrop-blur-md border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group hover:shadow-glow"
                 onClick={() => navigate(`/forecast/${category.id}`)}
               >
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Background gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-card/60 via-card/40 to-card/60 z-0" />
+                
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Left side - Product image and info */}
                   <div className="relative">
                     <div className="relative h-64 lg:h-full overflow-hidden">
@@ -150,7 +153,9 @@ const Home = () => {
                         alt={category.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                      {/* Multi-layer gradient for smooth blend */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/70 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-card/60 via-transparent to-card/30" />
                       <div className="absolute bottom-0 left-0 right-0 p-6">
                         <h3 className="text-3xl font-bold mb-2">{category.title}</h3>
                         <p className="text-muted-foreground">
@@ -171,6 +176,8 @@ const Home = () => {
                         alt={`${category.title} infographic`}
                         className="w-full h-auto object-contain"
                       />
+                      {/* Subtle gradient on infographic */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-card/20 via-transparent to-transparent pointer-events-none" />
                     </div>
                     <div className="flex items-center text-primary text-sm font-medium justify-end">
                       Start Analysis
