@@ -7,6 +7,10 @@ import categoryCars from "@/assets/category-cars.jpg";
 import categoryBikes from "@/assets/images.png";
 import categoryAppliances from "@/assets/category-appliances.jpg";
 import categoryFmcg from "@/assets/category-fmcg.jpg";
+import infographicCars from "@/assets/infographic-cars.png";
+import infographicBikes from "@/assets/infographic-bikes.png";
+import infographicAppliances from "@/assets/infographic-appliances.png";
+import infographicFmcg from "@/assets/infographic-fmcg.png";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -17,44 +21,28 @@ const Home = () => {
       title: "Cars",
       description: "Predict automotive sales with precision",
       image: categoryCars,
-      stats: [
-        { label: "Avg Price Range", value: "₹10-25L" },
-        { label: "Key Factor", value: "Fuel Efficiency" },
-        { label: "Sweet Spot", value: "15+ km/l" },
-      ],
+      infographic: infographicCars,
     },
     {
       id: "bikes",
       title: "Bikes",
       description: "Forecast two-wheeler market trends",
       image: categoryBikes,
-      stats: [
-        { label: "Avg Price Range", value: "₹80K-2L" },
-        { label: "Key Factor", value: "Mileage" },
-        { label: "Sweet Spot", value: "45+ km/l" },
-      ],
+      infographic: infographicBikes,
     },
     {
       id: "appliances",
       title: "Home Appliances",
       description: "Analyze home appliance demand",
       image: categoryAppliances,
-      stats: [
-        { label: "Avg Price Range", value: "₹15K-80K" },
-        { label: "Key Factor", value: "Energy Rating" },
-        { label: "Sweet Spot", value: "4-5 Star" },
-      ],
+      infographic: infographicAppliances,
     },
     {
       id: "fmcg",
       title: "FMCG",
       description: "Fast-moving consumer goods insights",
       image: categoryFmcg,
-      stats: [
-        { label: "Avg Price Range", value: "₹50-500" },
-        { label: "Key Factor", value: "Shelf Life" },
-        { label: "Sweet Spot", value: "6-12 months" },
-      ],
+      infographic: infographicFmcg,
     },
   ];
 
@@ -146,40 +134,48 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          <div className="space-y-6">
             {categories.map((category) => (
               <Card
                 key={category.id}
                 className="relative overflow-hidden bg-card/20 backdrop-blur-md border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group hover:shadow-glow"
                 onClick={() => navigate(`/forecast/${category.id}`)}
               >
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={category.image} 
-                    alt={category.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-3">{category.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">
-                    {category.description}
-                  </p>
-                  
-                  {/* Industry Infographics */}
-                  <div className="space-y-2 mb-4 pb-4 border-b border-border/50">
-                    {category.stats.map((stat, idx) => (
-                      <div key={idx} className="flex justify-between items-center">
-                        <span className="text-xs text-muted-foreground">{stat.label}:</span>
-                        <span className="text-xs font-semibold text-primary">{stat.value}</span>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Left side - Product image and info */}
+                  <div className="relative">
+                    <div className="relative h-64 lg:h-full overflow-hidden">
+                      <img 
+                        src={category.image} 
+                        alt={category.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 className="text-3xl font-bold mb-2">{category.title}</h3>
+                        <p className="text-muted-foreground">
+                          {category.description}
+                        </p>
                       </div>
-                    ))}
+                    </div>
                   </div>
                   
-                  <div className="flex items-center text-primary text-sm font-medium">
-                    Analyze Now
-                    <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  {/* Right side - Infographic */}
+                  <div className="p-6 flex flex-col justify-center">
+                    <div className="mb-4">
+                      <h4 className="text-lg font-semibold mb-2 text-primary">Sales Optimization Insights</h4>
+                    </div>
+                    <div className="relative rounded-lg overflow-hidden mb-4">
+                      <img 
+                        src={category.infographic} 
+                        alt={`${category.title} infographic`}
+                        className="w-full h-auto object-contain"
+                      />
+                    </div>
+                    <div className="flex items-center text-primary text-sm font-medium justify-end">
+                      Start Analysis
+                      <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
                 </div>
               </Card>
