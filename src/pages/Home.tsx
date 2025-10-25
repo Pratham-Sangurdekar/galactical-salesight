@@ -7,10 +7,10 @@ import categoryCars from "@/assets/category-cars.jpg";
 import categoryBikes from "@/assets/image.jpg";
 import categoryAppliances from "@/assets/category-appliances.jpg";
 import categoryFmcg from "@/assets/category-fmcg.jpg";
-import infographicCars from "@/assets/infographic-cars.png";
-import infographicBikes from "@/assets/infographic-bikes.png";
-import infographicAppliances from "@/assets/infographic-appliances.png";
-import infographicFmcg from "@/assets/infographic-fmcg.png";
+import infographicCars from "@/assets/infographic_car.jpeg";
+import infographicBikes from "@/assets/infographic_bike.jpeg";
+import infographicAppliances from "@/assets/infographic_appliance.jpeg";
+import infographicFmcg from "@/assets/infographic_fmcg.jpeg";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -67,16 +67,16 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
         <div className="relative max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 animate-glow-pulse">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-primary">AI-Powered Forecasting</span>
-          </div>
-          
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground via-primary to-secondary">
+
+          <h1 className="text-7xl sm:text-3xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground via-primary to-secondary">
             Salesight AI
           </h1>
+           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 animate-glow-pulse">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-xl font-medium text-primary">Made by Pratham, Eshaan & Aditya</span>
+          </div>
           
-          <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+          <p className="text-xl sm:text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
             Predict product success with precision. Make data-driven decisions for cars, bikes, appliances, and FMCG.
           </p>
           

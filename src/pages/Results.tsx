@@ -3,111 +3,97 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Lightbulb } from "lucide-react";
 import { useEffect, useState } from "react";
+import { fetchCarForecast } from "@/lib/api";
 
 const Results = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { formData, category } = location.state || {};
   const [prediction, setPrediction] = useState<"profitable" | "risky" | null>(null);
+  const [backendResult, setBackendResult] = useState<any | null>(null);
+  const [backendError, setBackendError] = useState<string | null>(null);
+  const [loadingBackend, setLoadingBackend] = useState(false);
 
   useEffect(() => {
     if (!formData) {
       navigate("/");
       return;
     }
-
-    let score = 0;
-
-    // Cars prediction logic
     if (category === "cars") {
-      const price = parseFloat(formData.price);
-      const mileage = parseFloat(formData.mileage);
-      const horsepower = parseFloat(formData.horsepower);
-      
-      if (price >= 1000000 && price <= 2500000) score += 30;
-      else if (price > 2500000 && price <= 4000000) score += 20;
-      else score += 10;
-      
-      if (mileage >= 15) score += 25;
-      else if (mileage >= 10) score += 15;
-      
-      if (horsepower >= 120 && horsepower <= 200) score += 20;
-      else if (horsepower > 200) score += 15;
-      
-      if (formData.bodyType === "suv") score += 15;
-      else if (formData.bodyType === "sedan") score += 10;
-      
-      if (formData.fuelType === "electric" || formData.fuelType === "hybrid") score += 15;
-      else if (formData.fuelType === "petrol") score += 10;
-      
-      if (formData.customInteriors === "yes") score += 10;
+      setLoadingBackend(true);
+      fetchCarForecast(formData)
+        .then((res) => {
+          setBackendResult(res);
+          setPrediction(res.profitable ? "profitable" : "risky");
+        })
+        .catch((err) => {
+          setBackendError(err?.message || "Forecast failed");
+          // Fallback to heuristic scoring
+          let score = 0;
+          const price = parseFloat(formData.price);
+          const mileage = parseFloat(formData.mileage);
+          const horsepower = parseFloat(formData.horsepower);
+          if (price >= 1000000 && price <= 2500000) score += 30; else if (price > 2500000 && price <= 4000000) score += 20; else score += 10;
+          if (mileage >= 15) score += 25; else if (mileage >= 10) score += 15;
+          if (horsepower >= 120 && horsepower <= 200) score += 20; else if (horsepower > 200) score += 15;
+          if (formData.bodyType === "suv") score += 15; else if (formData.bodyType === "sedan") score += 10;
+          if (formData.fuelType === "electric" || formData.fuelType === "hybrid") score += 15; else if (formData.fuelType === "petrol") score += 10;
+          if (formData.customInteriors === "yes") score += 10;
+          setPrediction(score >= 60 ? "profitable" : "risky");
+        })
+        .finally(() => setLoadingBackend(false));
+      return;
     }
-
+    let score = 0;
+    // ...existing code for other categories...
     // Bikes prediction logic
     if (category === "bikes") {
       const price = parseFloat(formData.price);
       const mileage = parseFloat(formData.mileage);
       const engineCapacity = parseFloat(formData.engineCapacity);
-      
       if (price >= 80000 && price <= 200000) score += 30;
       else if (price > 200000 && price <= 400000) score += 20;
       else score += 10;
-      
       if (mileage >= 45) score += 30;
       else if (mileage >= 35) score += 20;
-      
       if (engineCapacity >= 150 && engineCapacity <= 250) score += 20;
       else if (engineCapacity > 250) score += 15;
-      
       if (formData.bikeType === "commuter") score += 15;
       else if (formData.bikeType === "sport") score += 10;
-      
       if (formData.abs === "yes") score += 10;
       if (formData.digitalDisplay === "yes") score += 5;
     }
-
     // Appliances prediction logic
     if (category === "appliances") {
       const price = parseFloat(formData.price);
       const energyRating = parseFloat(formData.energyRating);
-      
       if (price >= 15000 && price <= 80000) score += 30;
       else if (price > 80000 && price <= 150000) score += 20;
       else score += 10;
-      
       if (energyRating >= 4) score += 30;
       else if (energyRating >= 3) score += 20;
-      
       if (formData.applianceType === "refrigerator" || formData.applianceType === "air-conditioner") score += 15;
       else score += 10;
-      
       if (formData.smartFeatures === "yes") score += 15;
       if (formData.warranty >= 3) score += 10;
     }
-
     // FMCG prediction logic
     if (category === "fmcg") {
       const price = parseFloat(formData.price);
       const shelfLife = parseFloat(formData.shelfLife);
-      
       if (price >= 50 && price <= 500) score += 30;
       else if (price > 500 && price <= 1000) score += 20;
       else score += 10;
-      
       if (shelfLife >= 6 && shelfLife <= 12) score += 25;
       else if (shelfLife > 12) score += 15;
-      
       if (formData.packaging === "eco-friendly") score += 15;
       else if (formData.packaging === "premium") score += 10;
-      
       if (formData.category === "food" || formData.category === "beverages") score += 15;
       else score += 10;
-      
       if (formData.organic === "yes") score += 15;
     }
-    
     setPrediction(score >= 60 ? "profitable" : "risky");
-  }, [formData, category, navigate]);
+  }, [formData, category, backendResult, navigate]);
 
   if (!formData || !prediction) {
     return null;
@@ -196,7 +182,7 @@ const Results = () => {
         {/* Prediction Result */}
         <Card className={`p-8 mb-8 border-2 ${isProfitable ? 'border-primary bg-primary/5' : 'border-destructive bg-destructive/5'}`}>
           <div className="flex items-start gap-4">
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center ${isProfitable ? 'bg-primary/20' : 'bg-destructive/20'}`}>
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center ${isProfitable ? 'bg-primary/20' : 'bg-destructive/20'}`}> 
               {isProfitable ? (
                 <TrendingUp className="w-8 h-8 text-primary" />
               ) : (
@@ -205,13 +191,34 @@ const Results = () => {
             </div>
             <div className="flex-1">
               <h1 className="text-3xl font-bold mb-2">
-                {isProfitable ? "Profitable Sales Predicted" : "Sales Risk Detected"}
+                {loadingBackend && category === 'cars' ? 'Generating AI Forecast…' : isProfitable ? "Profitable Sales Predicted" : "Sales Risk Detected"}
               </h1>
               <p className="text-lg text-muted-foreground">
                 {isProfitable 
                   ? "Your car configuration shows strong market potential with favorable sales forecasts."
                   : "Current specifications may face market challenges. Review recommendations below."}
               </p>
+              {/* Show backend metrics for car forecasts */}
+              {category === "cars" && backendResult && (
+                <div className="mt-4 p-4 bg-card/30 rounded border border-border">
+                  <h3 className="font-semibold mb-2">🤖 AI Model Metrics</h3>
+                  <div className="text-sm text-muted-foreground space-y-1">
+                    <div><strong>Prediction:</strong> {backendResult.prediction}</div>
+                    <div><strong>Confidence:</strong> {(backendResult.probability * 100).toFixed(2)}%</div>
+                    <div className="pt-2 border-t border-border mt-2">
+                      <div><strong>Model Accuracy:</strong> {(backendResult.metrics.accuracy * 100).toFixed(2)}%</div>
+                      <div><strong>Precision:</strong> {(backendResult.metrics.precision * 100).toFixed(2)}%</div>
+                      <div><strong>Recall:</strong> {(backendResult.metrics.recall * 100).toFixed(2)}%</div>
+                      <div><strong>F1 Score:</strong> {(backendResult.metrics.f1_score * 100).toFixed(2)}%</div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {category === 'cars' && backendError && (
+                <div className="mt-3 p-3 rounded border border-border bg-destructive/10 text-sm text-destructive-foreground">
+                  Backend unavailable. Showing heuristic forecast. Details: {backendError}
+                </div>
+              )}
             </div>
           </div>
         </Card>

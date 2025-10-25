@@ -35,10 +35,8 @@ const CarForecast = () => {
     customInteriors: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Basic validation
     if (Object.values(formData).some(value => !value)) {
       toast({
         title: "Incomplete Form",
@@ -47,8 +45,7 @@ const CarForecast = () => {
       });
       return;
     }
-
-    // Navigate to results with form data
+    // Defer backend call to Results page for simplicity & reliability
     navigate("/results", { state: { formData, category: "cars" } });
   };
 
@@ -69,9 +66,7 @@ const CarForecast = () => {
         </Button>
 
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
-            <span className="text-4xl">🚗</span>
-          </div>
+          
           <h1 className="text-4xl font-bold mb-4">Car Sales Forecast</h1>
           <p className="text-muted-foreground text-lg">
             Enter your car specifications to predict market performance
