@@ -68,7 +68,7 @@ const Home = () => {
       <section className="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
         <div className="relative max-w-7xl mx-auto text-center">
 
-          <h1 className="text-7xl sm:text-3xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground via-primary to-secondary">
+          <h1 className="text-7xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground via-primary to-secondary">
             Salesight AI
           </h1>
            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 animate-glow-pulse">
@@ -76,7 +76,7 @@ const Home = () => {
             <span className="text-xl font-medium text-primary">Made by Pratham, Eshaan & Aditya</span>
           </div>
           
-          <p className="text-xl sm:text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
+          <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
             Predict product success with precision. Make data-driven decisions for cars, bikes, appliances, and FMCG.
           </p>
           

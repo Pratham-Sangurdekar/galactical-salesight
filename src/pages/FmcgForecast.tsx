@@ -67,9 +67,7 @@ const FmcgForecast = () => {
         </Button>
 
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
-            <span className="text-4xl">🛒</span>
-          </div>
+          
           <h1 className="text-4xl font-bold mb-4">FMCG Sales Forecast</h1>
           <p className="text-muted-foreground text-lg">
             Enter your product specifications to predict market performance

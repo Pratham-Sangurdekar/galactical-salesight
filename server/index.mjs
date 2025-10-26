@@ -17,11 +17,16 @@ app.get('/health', (_req, res) => res.json({ ok: true }));
 
 // Per-request Python process (avoids long-lived TF process locks on macOS)
 const repoRoot = path.resolve(__dirname, '..');
-const pythonScript = path.resolve(repoRoot, 'DL', 'app.py');
+const backendScript = path.resolve(repoRoot, 'backend', 'predict_api.py');
+const dlScript = path.resolve(repoRoot, 'DL', 'app.py');
+const tfenvPython = path.resolve(repoRoot, 'backend', 'tfenv', 'bin', 'python3');
 
-function runPythonOnce(payload, timeoutMs = 60000) {
+function runPythonOnce(scriptPath, payload, timeoutMs = 60000) {
   return new Promise((resolve, reject) => {
-    const child = spawn('python3', [pythonScript], {
+    // Use tfenv Python for backend script, system python3 for DL script
+    const pythonExe = scriptPath.includes('backend') ? tfenvPython : 'python3';
+    
+    const child = spawn(pythonExe, [scriptPath], {
       cwd: repoRoot,
       stdio: ['pipe', 'pipe', 'pipe'],
       env: {
@@ -72,14 +77,30 @@ function runPythonOnce(payload, timeoutMs = 60000) {
 
 app.post('/api/predict', async (req, res) => {
   const payload = req.body || {};
+  
+  // Try backend model first (new 8k model)
   try {
-    const result = await runPythonOnce(payload, 60000); // 60s timeout
+    const result = await runPythonOnce(backendScript, payload, 60000);
+    if (result && !result.error) {
+      return res.json(result);
+    }
+    // Backend returned an error, fall through to DL
+    console.warn('Backend model error:', result.error);
+  } catch (e) {
+    // Backend failed to execute, fall through to DL
+    console.warn('Backend model failed:', e.message);
+  }
+  
+  // Fallback to DL model
+  try {
+    const result = await runPythonOnce(dlScript, payload, 60000);
     if (result && result.error) {
       return res.status(400).json(result);
     }
     return res.json(result);
   } catch (e) {
-    return res.status(500).json({ error: e.message });
+    // Both backends failed, return error (frontend will use heuristic)
+    return res.status(500).json({ error: 'All backends failed: ' + e.message });
   }
 });
 
