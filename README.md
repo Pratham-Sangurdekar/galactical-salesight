@@ -1,73 +1,115 @@
-# Welcome to your Lovable project
+##Salesight AI
 
-## Project info
+Intelligent Sales Forecasting using Deep Neural Networks
 
-**URL**: https://lovable.dev/projects/2e9eec5c-3140-4d82-a112-970f7cbc99ab
+⸻
 
-## How can I edit this code?
+📘 Overview
 
-There are several ways of editing your application.
+Salesight AI is a machine learning–driven sales forecasting system that predicts the profitability of automobile sales using a Feedforward Neural Network (FNN).
+This project leverages advanced deep learning techniques, statistical preprocessing, and scalable architecture to forecast sales performance with improved accuracy and explainability.
 
-**Use Lovable**
+The goal is to assist automotive businesses and analysts in identifying high-potential, profitable products and improving data-driven decision-making across operations and marketing pipelines.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/2e9eec5c-3140-4d82-a112-970f7cbc99ab) and start prompting.
+⸻
 
-Changes made via Lovable will be committed automatically to this repo.
+🚀 Key Features
+	•	Neural Network–based Prediction
+Uses a multi-layer FNN trained on a diverse automotive dataset (8,000+ entries).
+	•	Robust Preprocessing Pipeline
+Employs One-Hot Encoding and Standard Scaling via ColumnTransformer.
+	•	Performance Metrics Dashboard
+Generates a confusion matrix, accuracy, precision, recall, F1 score, and AUC.
+	•	CLI-Based Prediction
+Test new data points directly via command line with real-time metric computation.
+	•	Modular Architecture
+Clean separation of training, evaluation, and prediction scripts to support frontend integration.
 
-**Use your preferred IDE**
+⸻
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+🧩 System Architecture
+	1.	Dataset Module – Structured data of Indian car attributes and sales profitability.
+	2.	Preprocessing Module – Encodes categorical and numerical data with OneHotEncoder and StandardScaler.
+	3.	Neural Network Model –
+	•	4 hidden layers using ReLU activations
+	•	Dropout and L2 Regularization to prevent overfitting
+	•	Optimized using Adam with adaptive learning rate scheduling
+	4.	Evaluation Module –
+Computes confusion matrix and key metrics via sklearn.metrics.
+	5.	Visualization –
+Confusion matrix image and summary tables generated post-training.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+⸻
 
-Follow these steps:
+🧠 Model Details
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Layer	Units	Activation	Regularization
+Dense	256	ReLU	L2 + Dropout(0.3)
+Dense	128	ReLU	L2 + Dropout(0.3)
+Dense	64	ReLU	L2 + Dropout(0.2)
+Dense	1	Sigmoid	–
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Optimizer: Adam (lr=0.001)
+Loss: Binary Crossentropy
+Callbacks: EarlyStopping, ReduceLROnPlateau
 
-# Step 3: Install the necessary dependencies.
-npm i
+⸻
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+⚙️ How to Run
 
-**Edit a file directly in GitHub**
+1️⃣ Create Virtual Environment
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+python3 -m venv tfenv
+source tfenv/bin/activate
+pip install -r requirements.txt
 
-**Use GitHub Codespaces**
+2️⃣ Train the Model
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+python train_and_save.py
 
-## What technologies are used for this project?
+This saves:
+	•	sales_forecasting_model.keras
+	•	preprocessor.joblib
 
-This project is built with:
+3️⃣ Test the Model via CLI
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+python test_cli.py
 
-## How can I deploy this project?
+Input the required parameters for a new car entry to get predicted profitability and performance metrics.
 
-Simply open [Lovable](https://lovable.dev/projects/2e9eec5c-3140-4d82-a112-970f7cbc99ab) and click on Share -> Publish.
+⸻
 
-## Can I connect a custom domain to my Lovable project?
+📊 Evaluation Example
 
-Yes, you can!
+Metric	Score
+Accuracy	0.85
+Precision	0.88
+Recall	0.83
+F1 Score	0.85
+AUC	0.87
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+⸻
+
+🧩 Tech Stack
+	•	Python 3.11
+	•	TensorFlow / Keras
+	•	Scikit-learn
+	•	Pandas, NumPy
+	•	Matplotlib, Joblib
+
+⸻
+
+🔬 Research & Context
+
+This work is inspired by advancements in neural sales forecasting and predictive analytics.
+The methodology follows the principles outlined in IEEE-grade studies focusing on multi-layer deep learning frameworks for structured business data.
+
+⸻
+
+🧾 Citation
+
+If used for academic or industrial purposes, please cite as:
+
+Pratham (2025). Salesight AI: Neural Network-Driven Sales Forecasting Model. Department of Artificial Intelligence Engineering, India.
+
