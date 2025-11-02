@@ -1,8 +1,8 @@
-## Salesight AI
+# Salesight AI
 
 Intelligent Sales Forecasting using Deep Neural Networks
 
-# 📘 Overview
+## 📘 Overview
 
 Salesight AI is a machine learning–driven sales forecasting system that predicts the profitability of automobile sales using a Feedforward Neural Network (FNN).
 This project leverages advanced deep learning techniques, statistical preprocessing, and scalable architecture to forecast sales performance with improved accuracy and explainability.
@@ -10,7 +10,8 @@ This project leverages advanced deep learning techniques, statistical preprocess
 The goal is to assist automotive businesses and analysts in identifying high-potential, profitable products and improving data-driven decision-making across operations and marketing pipelines.
 
 
-🚀 Key Features
+## 🚀 Key Features
+
 	•	Neural Network–based Prediction
 Uses a multi-layer FNN trained on a diverse automotive dataset (8,000+ entries).
 	•	Robust Preprocessing Pipeline
@@ -23,7 +24,8 @@ Test new data points directly via command line with real-time metric computation
 Clean separation of training, evaluation, and prediction scripts to support frontend integration.
 
 
-🧩 System Architecture
+## 🧩 System Architecture
+
 	1.	Dataset Module – Structured data of Indian car attributes and sales profitability.
 	2.	Preprocessing Module – Encodes categorical and numerical data with OneHotEncoder and StandardScaler.
 	3.	Neural Network Model –
@@ -37,7 +39,7 @@ Confusion matrix image and summary tables generated post-training.
 
 
 
-🧠 Model Details
+## 🧠 Model Details
 
 Layer	Units	Activation	Regularization
 Dense	256	ReLU	L2 + Dropout(0.3)
